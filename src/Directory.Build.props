@@ -1,0 +1,17 @@
+<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove($(MSBuildThisFile), '$(MSBuildThisFileDirectory)../'))"
+          Condition="$([MSBuild]::GetPathOfFileAbove($(MSBuildThisFile), '$(MSBuildThisFileDirectory)../')) != ''" />
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+    <!-- Note that despite the fact that we need an assembly name here,
+      this does not use $(AssemblyName).
+      The reason is that the assembly name of the implementation project will
+      often be different from the project name.
+      The test assembly however will usually have its default name, i. e. 
+      the same name as the test project.
+      Since the test project is named like the implementation project with .Tests suffix,
+      we can predict the test assembly name from the implementation project name. -->
+    <InternalsVisibleTo Include="$(MSBuildProjectName).Tests" />
+  </ItemGroup>
+</Project>

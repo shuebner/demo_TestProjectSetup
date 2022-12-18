@@ -1,0 +1,20 @@
+<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove($(MSBuildThisFile), '$(MSBuildThisFileDirectory)../'))"
+          Condition="$([MSBuild]::GetPathOfFileAbove($(MSBuildThisFile), '$(MSBuildThisFileDirectory)../')) != ''" />
+
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- The implementation project name is assumed to be the test project name without the last '.' and everything after that -->
+    <__LastIndexOfPeriod>$([System.String]::Copy($(MSBuildProjectName)).LastIndexOf('.'))</__LastIndexOfPeriod>
+    <__HeuristicImplementationProjectName Condition="'$(__LastIndexOfPeriod)' != '-1'">$([System.String]::Copy($(MSBuildProjectName)).Substring(0, $([System.String]::Copy($(MSBuildProjectName)).LastIndexOf('.'))))</__HeuristicImplementationProjectName>
+    <__HeuristicImplementationProjectPath Condition="'$(__HeuristicImplementationProjectName)' != ''">$(MSbuildThisFileDirectory)../src/$(__HeuristicImplementationProjectName)/$(__HeuristicImplementationProjectName).csproj</__HeuristicImplementationProjectPath>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="$(__HeuristicImplementationProjectPath)" Condition="__HeuristicImplementationProjectPath != '' AND Exists($(__HeuristicImplementationProjectPath))" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)TestUtil/TestUtil.csproj" Condition="'$(MSBuildProjectName)' != 'TestUtil'" />
+  </ItemGroup>
+</Project>

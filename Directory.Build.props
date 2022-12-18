@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <Company>Sven Hübner IT</Company>
+    <Copyright>Copyright (c) Sven Hübner IT 2022-$([System.DateTimeOffset]::UtcNow.Year</Copyright>
+  </PropertyGroup>
+</Project>
